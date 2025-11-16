@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+    السمة الرئيسية للتطبيق. 
+    هذه هي السمة التي يستخدمها Android لعرض الأنشطة.
+    -->
+    <style name="NormalTheme" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <!-- لجعل شريط الحالة شفافًا وأيقوناته داكنة ليناسب تطبيقات Flutter ذات الخلفية البيضاء -->
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>
