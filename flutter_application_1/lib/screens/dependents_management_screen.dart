@@ -8,7 +8,7 @@ import '../home_screen/app_drawer.dart';
 class DependentsManagementScreen extends StatelessWidget {
   const DependentsManagementScreen({super.key});
 
-  // ===== بيانات وهمية للمرافقين (يمكن استبدالها ببيانات حقيقية لاحقاً)
+  // بيانات تجريبية (يمكنك لاحقاً ربطها بقاعدة بيانات)
   final List<Map<String, dynamic>> _mockDependents = const [
     {'name': 'سارة محمد العلي', 'relation': 'زوجة', 'gender': 'female'},
     {'name': 'خالد محمد العلي', 'relation': 'ابن', 'gender': 'male'},
@@ -21,15 +21,17 @@ class DependentsManagementScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       endDrawer: const AppDrawer(),
 
-      // ===== AppBar
+      // ===================== AppBar =====================
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 0,
         toolbarHeight: 90,
         leadingWidth: 70,
+
+        // Logo على اليمين حسب اتجاه RTL
         leading: Padding(
-          padding: const EdgeInsets.only(right: 10.0),
+          padding: const EdgeInsets.only(left: 10.0),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.asset(
@@ -40,21 +42,21 @@ class DependentsManagementScreen extends StatelessWidget {
             ),
           ),
         ),
+
+        // زر الرجوع Back.png
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const HomeScreen()),
-                (route) => false,
-              );
+              Navigator.pop(context);
             },
             icon: Image.asset('assets/images/back.png', width: 24, height: 24),
           ),
           const SizedBox(width: 8),
         ],
+
+        // عنوان الشاشة
         title: const Text(
-          'ادارة المرافقين',
+          'إدارة المرافقين',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -64,19 +66,17 @@ class DependentsManagementScreen extends StatelessWidget {
         centerTitle: true,
       ),
 
-      // ===== Body
+      // ===================== BODY =====================
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(
           children: [
-            // أزرار الملفات الشخصية
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: _buildProfileSelectors(),
             ),
             const SizedBox(height: 10),
 
-            // قائمة المرافقين (الجديدة)
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.all(10.0),
@@ -87,16 +87,14 @@ class DependentsManagementScreen extends StatelessWidget {
               ),
             ),
 
-            // زر إضافة موعد جديد
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 40.0,
                 vertical: 20,
               ),
-              child: _buildAddAppointmentButton(context),
+              child: _buildAddDependentButton(context),
             ),
 
-            // شريط التنقل السفلي
             _buildBottomNavigationBar(context),
           ],
         ),
@@ -104,7 +102,7 @@ class DependentsManagementScreen extends StatelessWidget {
     );
   }
 
-  // ===== تصميم بطاقة المرافق الجديد (Card Design)
+  // ===================== بطاقة المرافق =====================
   Widget _buildDependentCard(
     BuildContext context,
     Map<String, dynamic> dependent,
@@ -120,9 +118,7 @@ class DependentsManagementScreen extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // الصورة الرمزية (Avatar)
             CircleAvatar(
               radius: 25,
               backgroundColor: avatarColor,
@@ -134,7 +130,6 @@ class DependentsManagementScreen extends StatelessWidget {
             ),
             const SizedBox(width: 15),
 
-            // الاسم والعلاقة
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,10 +150,8 @@ class DependentsManagementScreen extends StatelessWidget {
               ),
             ),
 
-            // زر الإجراء السريع (عرض الملف)
             TextButton.icon(
               onPressed: () {
-                // TODO: التنقل إلى شاشة ملف المرافق
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('عرض ملف: ${dependent['name']}')),
                 );
@@ -175,10 +168,6 @@ class DependentsManagementScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
-                alignment: Alignment.centerRight,
-              ),
             ),
           ],
         ),
@@ -186,13 +175,12 @@ class DependentsManagementScreen extends StatelessWidget {
     );
   }
 
-  // ===== أزرار الملفات الشخصية
+  // ===================== أزرار الحسابات =====================
   Widget _buildProfileSelectors() {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       reverse: true,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           _buildProfileButton(
             'حسابك الشخصي',
@@ -243,22 +231,21 @@ class DependentsManagementScreen extends StatelessWidget {
     );
   }
 
-  // ===== زر إضافة موعد جديد
-  Widget _buildAddAppointmentButton(BuildContext context) {
+  // ===================== زر إضافة مرافق =====================
+  Widget _buildAddDependentButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () => Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => const AddDependentScreen()),
       ),
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF003366),
+        backgroundColor: HomeScreen.primaryBlue,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         padding: const EdgeInsets.symmetric(vertical: 15),
         minimumSize: Size(MediaQuery.of(context).size.width * 0.8, 50),
-        elevation: 5,
       ),
       child: const Text(
-        'إضافة مرفق جديد',
+        'إضافة فرد/مرافق جديد',
         style: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
@@ -268,7 +255,7 @@ class DependentsManagementScreen extends StatelessWidget {
     );
   }
 
-  // ===== شريط التنقل السفلي
+  // ===================== Bottom Navigation =====================
   Widget _buildBottomNavigationBar(BuildContext context) {
     return Container(
       height: 80,
@@ -299,11 +286,10 @@ class DependentsManagementScreen extends StatelessWidget {
               MaterialPageRoute(builder: (_) => const HomeScreen()),
               (route) => false,
             ),
-            customBorder: const CircleBorder(),
             child: Container(
               width: 60,
               height: 60,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: HomeScreen.primaryBlue,
                 shape: BoxShape.circle,
               ),

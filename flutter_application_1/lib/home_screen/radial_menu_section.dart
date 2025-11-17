@@ -4,7 +4,6 @@ import 'package:flutter_application_1/home_screen/Profile_Screen.dart';
 import 'package:flutter_application_1/screens/health_data_screen.dart';
 import 'package:flutter_application_1/home_screen/Ticket_dates.dart';
 import 'package:flutter_application_1/screens/dependents_management_screen.dart';
-
 import 'dart:math' as math;
 import 'home_screen.dart';
 
@@ -13,7 +12,10 @@ class RadialMenuSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double radius = 140;
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double radius = deviceWidth * 0.30; // ديناميكية التباعد حسب الشاشة
+    final double centerCircle = deviceWidth * 0.33;
+
     final List<Map<String, dynamic>> services = [
       {
         'label': 'بياناتي',
@@ -44,16 +46,16 @@ class RadialMenuSection extends StatelessWidget {
 
     final double stackSize = radius * 2 + 120;
 
-    // حساب مواقع الأيقونات
     final List<Offset> iconCenters = services.asMap().entries.map((entry) {
       final int index = entry.key;
       final double angle =
           (2 * math.pi / services.length) * index - math.pi / 2;
       final double centerX = stackSize / 2;
       final double centerY = stackSize / 2;
-      final double dx = radius * math.cos(angle);
-      final double dy = radius * math.sin(angle);
-      return Offset(centerX + dx, centerY + dy);
+      return Offset(
+        centerX + radius * math.cos(angle),
+        centerY + radius * math.sin(angle),
+      );
     }).toList();
 
     return Center(
@@ -63,23 +65,19 @@ class RadialMenuSection extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            // CustomPaint لرسم الخط المتصل بين جميع الأيقونات
             CustomPaint(
               size: Size(stackSize, stackSize),
               painter: FullConnectedLinesPainter(iconCenters: iconCenters),
             ),
-            // الدائرة المركزية
-            // الدائرة المركزية
+
             // الدائرة المركزية
             Container(
-              width: 120,
-              height: 120,
+              width: centerCircle,
+              height: centerCircle,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
                   colors: [HomeScreen.primaryBlue, HomeScreen.lightBlue],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -102,13 +100,12 @@ class RadialMenuSection extends StatelessWidget {
                         height: 0.8,
                       ),
                     ),
-                    SizedBox(height: 10), // ← هذه المسافة الجديدة بين النصوص
+                    SizedBox(height: 10),
                     Text(
                       'نرعاك لتبقى بخير',
                       style: TextStyle(
                         color: Colors.white70,
                         fontSize: 12,
-                        fontWeight: FontWeight.normal,
                         height: 0.8,
                       ),
                     ),
@@ -117,44 +114,40 @@ class RadialMenuSection extends StatelessWidget {
               ),
             ),
 
-            // الأيقونات حول الدائرة
+            // الأيقونات
             ...services.asMap().entries.map((entry) {
               final int index = entry.key;
-              final service = entry.value;
               final double angle =
                   (2 * math.pi / services.length) * index - math.pi / 2;
               final double centerX = stackSize / 2;
               final double centerY = stackSize / 2;
-              final double dx = radius * math.cos(angle);
-              final double dy = radius * math.sin(angle);
 
               return Positioned(
-                left: centerX + dx - 40,
-                top: centerY + dy - 40,
+                left: centerX + radius * math.cos(angle) - 35,
+                top: centerY + radius * math.sin(angle) - 35,
                 child: Column(
                   children: [
                     GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => service['screen']),
-                        );
-                      },
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => entry.value['screen'],
+                        ),
+                      ),
                       child: CircleAvatar(
-                        radius: 40,
+                        radius: 35,
                         backgroundColor: HomeScreen.primaryBlue,
                         child: Icon(
-                          service['icon'],
+                          entry.value['icon'],
                           color: Colors.white,
-                          size: 32,
+                          size: 28,
                         ),
                       ),
                     ),
                     Text(
-                      service['label'],
+                      entry.value['label'],
                       style: const TextStyle(
-                        fontSize: 14,
+                        fontSize: 13,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black87,
                       ),
                     ),
                   ],
@@ -168,7 +161,6 @@ class RadialMenuSection extends StatelessWidget {
   }
 }
 
-// CustomPainter لرسم الخط المتصل بالكامل
 class FullConnectedLinesPainter extends CustomPainter {
   final List<Offset> iconCenters;
   FullConnectedLinesPainter({required this.iconCenters});
@@ -177,15 +169,11 @@ class FullConnectedLinesPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..color = Colors.blueAccent
-      ..strokeWidth = 3
+      ..strokeWidth = 2.8
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
-    if (iconCenters.length < 2) return;
-
-    // ترتيب الخط: تحاليل → بياناتي → مواعيد → السجل الصحي → المرافقين → تحاليل
     List<int> order = [4, 0, 1, 2, 3, 4];
-
     for (int i = 0; i < order.length - 1; i++) {
       canvas.drawLine(iconCenters[order[i]], iconCenters[order[i + 1]], paint);
     }

@@ -89,7 +89,7 @@ class RequestRecordScreen extends StatelessWidget {
                   border: Border.all(color: Colors.grey.shade200),
                 ),
                 child: Image.asset(
-                  'assets/images/request.PNG',
+                  'assets/images/request.png',
                   fit: BoxFit.contain,
                   width: double.infinity,
                   height: double.infinity,

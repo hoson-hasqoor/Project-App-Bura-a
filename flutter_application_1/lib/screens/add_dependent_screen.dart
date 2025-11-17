@@ -1,11 +1,13 @@
 // lib/screens/add_dependent_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/home_screen/home_screen.dart';
-import 'request_record_screen.dart'; // استيراد صفحة طلب السجل
+import 'package:flutter_application_1/home_screen/notifications_screen.dart';
+import 'request_record_screen.dart';
+import 'package:flutter_application_1/auth/signup_screen.dart';
 
 class AddDependentScreen extends StatefulWidget {
   const AddDependentScreen({super.key});
-
   @override
   State<AddDependentScreen> createState() => _AddDependentScreenState();
 }
@@ -15,8 +17,6 @@ class _AddDependentScreenState extends State<AddDependentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
-      // ===== AppBar مع شعار 40x40 وزر الرجوع
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -47,20 +47,12 @@ class _AddDependentScreenState extends State<AddDependentScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const HomeScreen()),
-                (route) => false,
-              );
-            },
+            onPressed: () => Navigator.pop(context),
             icon: Image.asset('assets/images/back.png', width: 24, height: 24),
           ),
           const SizedBox(width: 10),
         ],
       ),
-
-      // ===== Body
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: SingleChildScrollView(
@@ -68,20 +60,9 @@ class _AddDependentScreenState extends State<AddDependentScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 10),
-
-              // صورة توضيحية لشجرة العائلة/المرافقين
-              Image.asset(
-                'assets/images/family_tree_placeholder.png',
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(height: 40),
-
-              // شعار إضافي في الوسط
-              Image.asset('assets/images/logo.png', height: 60),
-              const SizedBox(height: 10),
+              const SizedBox(height: 60),
               const Text(
-                'إضافة مرافق جديد',
+                'كيف ترغب في إضافة المرافق؟',
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.black87,
@@ -89,22 +70,17 @@ class _AddDependentScreenState extends State<AddDependentScreen> {
                 ),
               ),
               const SizedBox(height: 30),
-
-              // ===== زر إنشاء حساب جديد
               _buildActionButton(
                 context,
                 text: 'إنشاء حساب جديد للمرافق',
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('تم اختيار: إنشاء حساب جديد للمرافق'),
-                    ),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const SignupScreen()),
                   );
                 },
               ),
               const SizedBox(height: 15),
-
-              // ===== زر طلب إدارة سجل موجود مسبقاً
               _buildActionButton(
                 context,
                 text: 'طلب إدارة سجل موجود مسبقاً',
@@ -112,21 +88,20 @@ class _AddDependentScreenState extends State<AddDependentScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const RequestRecordScreen(),
+                      builder: (_) => const RequestRecordScreen(),
                     ),
                   );
                 },
               ),
-
               const SizedBox(height: 40),
             ],
           ),
         ),
       ),
+      bottomNavigationBar: _buildBottomNavigationBar(context),
     );
   }
 
-  // ===== ويدجت موحد للأزرار الرئيسية
   Widget _buildActionButton(
     BuildContext context, {
     required String text,
@@ -151,6 +126,66 @@ class _AddDependentScreenState extends State<AddDependentScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildBottomNavigationBar(BuildContext context) {
+    return Container(
+      height: 80,
+      decoration: BoxDecoration(
+        color: HomeScreen.veryLightBlue.withOpacity(0.5),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            spreadRadius: 2,
+            blurRadius: 10,
+            offset: const Offset(0, -3),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          IconButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const NotificationsScreen()),
+            ),
+            icon: const Icon(
+              Icons.notifications_none,
+              size: 30,
+              color: Colors.grey,
+            ),
+          ),
+          InkWell(
+            onTap: () => Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (_) => const HomeScreen()),
+              (route) => false,
+            ),
+            child: Container(
+              width: 60,
+              height: 60,
+              decoration: const BoxDecoration(
+                color: HomeScreen.primaryBlue,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.home_filled,
+                size: 30,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          Builder(
+            builder: (context) => IconButton(
+              onPressed: () => Scaffold.of(context).openEndDrawer(),
+              icon: const Icon(Icons.menu, size: 30, color: Colors.grey),
+            ),
+          ),
+        ],
       ),
     );
   }
