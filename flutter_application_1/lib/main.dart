@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // (1) استيراد حزمة الخدمات
-import 'package:flutter_application_1/auth/login_screen.dart';
+import 'package:flutter_application_1/splash_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: false),
-      home: const LoginScreen(),
+      home: const SplashScreen(), // 👈 التغيير: ابدأ بشاشة البداية
     );
   }
 }
