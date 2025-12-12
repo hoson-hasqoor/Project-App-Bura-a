@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "736708833593",
+    "project_id": "bar-health",
+    "storage_bucket": "bar-health.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736708833593:android:7cd56aa70a419b48fa38e8",
+        "android_client_info": {
+          "package_name": "com.barhealth"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWeMmS0QP3QYi-4gk5Kn4NO9XGnL9kf9E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736708833593:android:aa4ffb6df9aff6f1fa38e8",
+        "android_client_info": {
+          "package_name": "com.barhealth.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWeMmS0QP3QYi-4gk5Kn4NO9XGnL9kf9E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

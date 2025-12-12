@@ -3,42 +3,101 @@ import 'package:flutter_application_1/auth/forgot_password_screen.dart';
 import 'package:flutter_application_1/home_screen/home_screen.dart';
 import 'package:flutter_application_1/auth/welcome_screen.dart';
 import 'package:flutter_application_1/screens/setting/ContactUs_Screen.dart';
+// 💡 استيراد خدمة المصادقة
+import 'package:flutter_application_1/auth_service.dart';
+// قد تحتاج لتعديل مسار الاستيراد أعلاه إذا كان مسار الملف مختلفًا
 
-class LoginScreen extends StatelessWidget {
+// 1. تحويل الشاشة إلى StatefulWidget
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  // 💡 المتغيرات الجديدة
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final AuthService _auth = AuthService(); // نسخة من خدمة المصادقة
+  bool _isLoading = false; // حالة التحميل
+  String? _errorMessage; // رسالة الخطأ
+
+  // تحديد الألوان المستخدمة في التصميم
   static const Color primaryBlue = Color(0xFF004AAD);
   static const Color lightGrey = Color(0xFFF0F0F0);
   static const Color buttonBlue = Color(0xFF3B82F6);
 
+  // 🌟 دالة تسجيل الدخول
+  Future<void> _handleLogin() async {
+    // 1. التحقق من صحة البيانات (بسيط)
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      setState(() {
+        _errorMessage = 'الرجاء إدخال البريد الإلكتروني وكلمة المرور.';
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null; // مسح الأخطاء السابقة
+    });
+
+    // 2. محاولة تسجيل الدخول
+    final user = await _auth.signInWithEmailAndPassword(
+      _emailController.text.trim(),
+      _passwordController.text,
+    );
+
+    // 3. معالجة النتيجة
+    if (user != null) {
+      // نجاح تسجيل الدخول: الانتقال إلى الشاشة الرئيسية
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      }
+    } else {
+      // فشل تسجيل الدخول: عرض رسالة خطأ
+      if (mounted) {
+        setState(() {
+          _errorMessage =
+              'فشل تسجيل الدخول. تحقق من بريدك الإلكتروني وكلمة المرور.';
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // 1. استخدام Scaffold بدون لون خلفية
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
-          // 1. طبقة الخلفية (ستغطي الشاشة بالكامل)
+          // طبقة الخلفية (بدون تغيير)
           Container(
-            // لضمان أن الـ Container يأخذ كامل مساحة الشاشة المتاحة
             width: double.infinity,
             height: double.infinity,
             decoration: const BoxDecoration(
-              color: Colors.white, // اللون الأساسي للخلفية
+              color: Colors.white,
               image: DecorationImage(
-                image: AssetImage(
-                  // **يرجى التأكد أن المسار والامتداد (background_logo.jpeg) صحيحان**
-                  'assets/images/background_logo_1.jpeg',
-                ),
-                // تم التعديل هنا: BoxFit.contain لعرض الصورة بالكامل دون قص
+                image: AssetImage('assets/images/background_logo_1.jpeg'),
                 fit: BoxFit.contain,
-                // تم تقليل الشفافية لجعلها باهتة جداً (علامة مائية حقيقية)
                 opacity: 0.05,
               ),
             ),
           ),
 
-          // 2. طبقة المحتوى (تكون فوق الخلفية)
+          // طبقة المحتوى
           SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(
@@ -48,10 +107,10 @@ class LoginScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  // 1. الشعار والترحيب
+                  // الشعار والعنوان (بدون تغيير)
                   Center(
                     child: Image.asset(
-                      'assets/images/logo.png', // تأكد من وجود صورة الشعار هنا
+                      'assets/images/logo.png',
                       height: 100,
                       width: 100,
                       errorBuilder: (context, error, stackTrace) => const Icon(
@@ -62,7 +121,6 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-
                   const Text(
                     'مرحباً بكم في برء',
                     textAlign: TextAlign.center,
@@ -74,8 +132,6 @@ class LoginScreen extends StatelessWidget {
                     textDirection: TextDirection.rtl,
                   ),
                   const SizedBox(height: 20),
-
-                  // 2. عنوان تسجيل الدخول
                   const Text(
                     'تسجيل الدخول',
                     textAlign: TextAlign.center,
@@ -88,19 +144,38 @@ class LoginScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
 
-                  // 3. حقل البريد الإلكتروني / رقم الهاتف
+                  // 💡 حقل البريد الإلكتروني
                   _buildLabeledTextField(
                     label: 'البريد الإلكتروني / رقم الهاتف',
                     hintText: 'example@example.com',
                     keyboardType: TextInputType.emailAddress,
+                    controller: _emailController, // 💡 ربط الـ Controller
                   ),
                   const SizedBox(height: 20),
 
-                  // 4. حقل كلمة المرور
-                  _buildLabeledPasswordTextField(label: 'كلمة المرور'),
+                  // 💡 حقل كلمة المرور
+                  _buildLabeledPasswordTextField(
+                    label: 'كلمة المرور',
+                    controller: _passwordController, // 💡 ربط الـ Controller
+                  ),
                   const SizedBox(height: 10),
 
-                  // 5. زر هل نسيت كلمة المرور؟
+                  // ⚠️ عرض رسالة الخطأ
+                  if (_errorMessage != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Text(
+                        _errorMessage!,
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.right,
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ),
+
+                  // زر هل نسيت كلمة المرور؟ (بدون تغيير)
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
@@ -126,18 +201,12 @@ class LoginScreen extends StatelessWidget {
 
                   const SizedBox(height: 30),
 
-                  // 6. زر تسجيل الدخول
+                  // 💡 زر تسجيل الدخول
                   SizedBox(
                     height: 55,
                     child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomeScreen(),
-                          ),
-                        );
-                      },
+                      // 💡 استدعاء دالة تسجيل الدخول
+                      onPressed: _isLoading ? null : _handleLogin,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: buttonBlue,
                         shape: RoundedRectangleBorder(
@@ -145,21 +214,24 @@ class LoginScreen extends StatelessWidget {
                         ),
                         elevation: 0,
                       ),
-                      child: const Text(
-                        'تسجيل الدخول',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                        textDirection: TextDirection.rtl,
-                      ),
+                      child: _isLoading
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            ) // حالة التحميل
+                          : const Text(
+                              'تسجيل الدخول',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                              textDirection: TextDirection.rtl,
+                            ),
                     ),
                   ),
 
+                  // باقي العناصر (بدون تغيير)
                   const SizedBox(height: 30),
-
-                  // 7. فاصل أو تسجيل الدخول عن طريق
                   const Row(
                     children: [
                       Expanded(
@@ -179,8 +251,6 @@ class LoginScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 20),
-
-                  // 8. زر الدخول عبر جوجل
                   SizedBox(
                     height: 55,
                     child: ElevatedButton.icon(
@@ -215,8 +285,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 60),
 
-                  // 9. جزئية الانتقال إلى شاشة إنشاء حساب
-                  // 9. جزئية الانتقال إلى شاشة إنشاء حساب
+                  // جزئية إنشاء حساب
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     textDirection: TextDirection.rtl,
@@ -248,7 +317,7 @@ class LoginScreen extends StatelessWidget {
                     ],
                   ),
 
-                  // زر "اتصل بنا" تحت سطر إنشاء الحساب
+                  // زر "اتصل بنا"
                   Center(
                     child: TextButton(
                       onPressed: () {
@@ -279,12 +348,14 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  // 1. دالة حقل الإدخال مع Label
+  // 2. دالة حقل الإدخال مع Label (تم تعديلها لقبول Controller)
   Widget _buildLabeledTextField({
     required String label,
     required String hintText,
+    required TextEditingController controller, // 💡 تمت الإضافة
     TextInputType keyboardType = TextInputType.text,
   }) {
+    // ... (باقي الكود)
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -303,6 +374,7 @@ class LoginScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           child: TextFormField(
+            controller: controller, // 💡 ربط الـ Controller
             textAlign: TextAlign.right,
             keyboardType: keyboardType,
             textDirection: TextDirection.rtl,
@@ -325,8 +397,11 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  // 2. دالة حقل كلمة المرور مع Label
-  Widget _buildLabeledPasswordTextField({required String label}) {
+  // 3. دالة حقل كلمة المرور مع Label (تم تعديلها لقبول Controller)
+  Widget _buildLabeledPasswordTextField({
+    required String label,
+    required TextEditingController controller, // 💡 تمت الإضافة
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -339,16 +414,17 @@ class LoginScreen extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         // الحقل نفسه
-        const _PasswordTextFieldModern(
+        _PasswordTextFieldModern(
           lightGrey: lightGrey,
           primaryBlue: primaryBlue,
           hintText: '********',
+          controller: controller, // 💡 تمرير الـ Controller
         ),
       ],
     );
   }
 
-  // 3. دالة إظهار الرسالة
+  // 4. دالة إظهار الرسالة (بدون تغيير)
   void _showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -359,16 +435,18 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-// 🌟 ويدجت حقل كلمة المرور
+// 🌟 ويدجت حقل كلمة المرور (تم تعديله لقبول Controller)
 class _PasswordTextFieldModern extends StatefulWidget {
   final Color lightGrey;
   final Color primaryBlue;
   final String hintText;
+  final TextEditingController controller; // 💡 تمت الإضافة
 
   const _PasswordTextFieldModern({
     required this.lightGrey,
     required this.primaryBlue,
     required this.hintText,
+    required this.controller, // 💡 تمت الإضافة
   });
 
   @override
@@ -388,12 +466,12 @@ class _PasswordTextFieldModernState extends State<_PasswordTextFieldModern> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // هنا لم نعد نحتاج للخلفية، فقط اللون الرمادي
       decoration: BoxDecoration(
         color: widget.lightGrey,
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextField(
+        controller: widget.controller, // 💡 ربط الـ Controller
         textAlign: TextAlign.right,
         obscureText: _obscureText,
         textDirection: TextDirection.rtl,
