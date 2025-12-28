@@ -1,0 +1,8 @@
+Variant: debug
+Config: debug
+Store: C:\Users\anas1\.android\debug.keystore
+Alias: AndroidDebugKey
+MD5: FF:F6:3B:29:0C:3F:00:95:49:1F:FB:67:03:CF:F4:52
+SHA1: F0:82:6B:13:4A:46:8D:1F:4D:F5:F7:3B:7A:20:3B:7F:D5:70:16:01
+SHA-256: 94:65:81:3D:43:14:66:D2:AA:5E:36:AF:D1:BE:47:D8:C6:E9:8E:42:98:6B:01:2E:6C:0E:AD:28:68:4F:79:B2
+Valid until: Sunday, April 4, 2055
