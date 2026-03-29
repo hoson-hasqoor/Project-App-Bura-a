@@ -34,11 +34,12 @@ In this project, I focused on applying industry-standard practices for mobile de
 I am a graduate of **Birzeit University**. This project serves as a practical application of my skills in **Mobile Development** and **Cloud Integration**. I built this to solve a real-world problem—fragmented medical records—while honing my ability to deliver a production-ready application.
 
 ---
+
+
+## 📸 Screenshots
 <img width="1410" height="2250" alt="4" src="https://github.com/user-attachments/assets/c3741ad1-2661-497e-9bcc-0d9b377b8b6a" />
 <img width="1410" height="2250" alt="2" src="https://github.com/user-attachments/assets/77f03ea9-7bbc-4959-bef0-3b875bfd3327" />
 <img width="1410" height="2250" alt="1" src="https://github.com/user-attachments/assets/d22f4191-1b1a-4e3c-8af6-4d2e8a0c923f" />
-
-## 📸 Screenshots
 <img width="1410" height="2250" alt="7" src="https://github.com/user-attachments/assets/ef2dd614-5f7c-46f2-acfb-685eff383e1f" />
 <img width="1410" height="2250" alt="39" src="https://github.com/user-attachments/assets/22449d34-40fc-4ca7-b24d-e40d19904342" />
 <img width="1410" height="2250" alt="37" src="https://github.com/user-attachments/assets/9e2ce98f-0e1c-4cd8-8dea-875359b7b114" />
