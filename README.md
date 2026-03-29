@@ -1,5 +1,8 @@
-<img width="1410" height="2250" alt="6" src="https://github.com/user-attachments/assets/9a9c3c50-06f1-41cf-ba42-0ec677c6127a" /># Bura'a (برء) - Digital Health Records Management App 🏥
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d22f4191-1b1a-4e3c-8af6-4d2e8a0c923f" width="250" />
+</p>
 
+# Bura'a (برء) - Digital Health Records Management App 🏥
 **Bura'a** is a comprehensive mobile application designed to digitize health records and simplify medical data management for individuals and families. This project was developed as a **Post-Graduation Self-Training Project** to demonstrate proficiency in modern mobile development using Flutter and Firebase.
 
 ---
@@ -35,18 +38,19 @@ I am a graduate of **Birzeit University**. This project serves as a practical ap
 
 ---
 
-
 ## 📸 Screenshots
-<img width="1410" height="2250" alt="4" src="https://github.com/user-attachments/assets/c3741ad1-2661-497e-9bcc-0d9b377b8b6a" />
-<img width="1410" height="2250" alt="2" src="https://github.com/user-attachments/assets/77f03ea9-7bbc-4959-bef0-3b875bfd3327" />
-<img width="1410" height="2250" alt="1" src="https://github.com/user-attachments/assets/d22f4191-1b1a-4e3c-8af6-4d2e8a0c923f" />
-<img width="1410" height="2250" alt="7" src="https://github.com/user-attachments/assets/ef2dd614-5f7c-46f2-acfb-685eff383e1f" />
-<img width="1410" height="2250" alt="39" src="https://github.com/user-attachments/assets/22449d34-40fc-4ca7-b24d-e40d19904342" />
-<img width="1410" height="2250" alt="37" src="https://github.com/user-attachments/assets/9e2ce98f-0e1c-4cd8-8dea-875359b7b114" />
-<img width="1410" height="2250" alt="36" src="https://github.com/user-attachments/assets/8982d394-f90c-48ae-8bf8-e8f92a91eab9" />
-<img width="1410" height="2250" alt="35" src="https://github.com/user-attachments/assets/7a9173e3-b9b9-41d0-9ba7-2c6245176a44" />
-<img width="1410" height="2250" alt="25" src="https://github.com/user-attachments/assets/6d899341-67c6-4a9b-851c-1ecf16abe7a2" />
-<img width="1410" height="2250" alt="14" src="https://github.com/user-attachments/assets/158394f7-44af-4300-8c46-157c87dc9308" />
-<img width="1410" height="2250" alt="13" src="https://github.com/user-attachments/assets/d71f513a-478d-49f3-8b08-fb0aad7e5808" />
-<img width="1410" height="2250" alt="12" src="https://github.com/user-attachments/assets/890aa976-3027-44dd-8b74-08f850d8de91" />
-<img width="1410" height="2250" alt="11" src="https://github.com/user-attachments/assets/51612ba6-1571-48e0-b210-187a703b58f9" />
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/77f03ea9-7bbc-4959-bef0-3b875bfd3327" width="250" />
+  <img src="https://github.com/user-attachments/assets/d22f4191-1b1a-4e3c-8af6-4d2e8a0c923f" width="250" />
+  <img src="https://github.com/user-attachments/assets/ef2dd614-5f7c-46f2-acfb-685eff383e1f" width="250" />
+  <img src="https://github.com/user-attachments/assets/9e2ce98f-0e1c-4cd8-8dea-875359b7b114" width="250" />
+  <img src="https://github.com/user-attachments/assets/51612ba6-1571-48e0-b210-187a703b58f9" width="250" />
+  <img src="https://github.com/user-attachments/assets/8982d394-f90c-48ae-8bf8-e8f92a91eab9" width="250" />
+  <img src="https://github.com/user-attachments/assets/7a9173e3-b9b9-41d0-9ba7-2c6245176a44" width="250" />
+  <img src="https://github.com/user-attachments/assets/6d899341-67c6-4a9b-851c-1ecf16abe7a2" width="250" />
+  <img src="https://github.com/user-attachments/assets/158394f7-44af-4300-8c46-157c87dc9308" width="250" />
+  <img src="https://github.com/user-attachments/assets/d71f513a-478d-49f3-8b08-fb0aad7e5808" width="250" />
+  <img src="https://github.com/user-attachments/assets/890aa976-3027-44dd-8b74-08f850d8de91" width="250" />
+  <img src="https://github.com/user-attachments/assets/22449d34-40fc-4ca7-b24d-e40d19904342" width="250" />
+</p>
